@@ -53,20 +53,41 @@ public class GammaEncryption {
         InputStream inputStream = new BufferedInputStream(new FileInputStream(input));
         BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outFile));
 
+        byte[] result;
+        byte[] gamma;
+        byte[] buf;
+        boolean flag = false;
         int turn = 0;
+        int counter = 0;
         while (turn != -1) {
             if(statesToDecr.isEmpty()) {
                 turn = inputStream.read();
                 continue;
             }
-            byte[] gamma =  statesToDecr.remove(statesToDecr.size() - 1);
-            byte[] buf = new byte[gamma.length];
-            byte[] outBuf = new byte[gamma.length];
+
+            gamma =  statesToDecr.remove(statesToDecr.size() - 1);
+
+            buf = new byte[gamma.length];
+            List<Byte> outBuf = new ArrayList<>();
             turn = inputStream.read(buf);
             for (int i = 0; i < buf.length; ++i) {
-                outBuf[i] = (byte) (buf[i] ^ gamma[i]);
+                outBuf.add((byte) (buf[i] ^ gamma[i]));
             }
-            outputStream.write(outBuf);
+            result = new byte[outBuf.size()];
+            for (int i = 0; i < outBuf.size(); i++)
+            {
+                if(outBuf.get(i) != 0) {
+                    result[i] = outBuf.get(i);
+                }
+                if(outBuf.get(i) == 0) {
+                    outputStream.write(result, 0, i);
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) {
+                outputStream.write(result);
+            }
         }
         outputStream.flush();
         outputStream.close();

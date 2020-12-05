@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,25 +13,25 @@ import java.util.List;
  */
 public class StringingWordEcr {
     public static void main(String[] args) throws IOException {
-        File input = new File("src/main/resources/input/input_file.txt");
-        File encDir = new File("src/main/resources/output_en");
-        File decrDir = new File("src/main/resources/output_decr");
-        File encryptShift = ShiftEncryption.encrypt(input, encDir, 5, Charset.forName("UTF-8"));
-        File encryptShuffle = ShuffleMethod.encrypt(input, encDir, new int[]{2, 4, 3, 1, 0});
-
-        List<int[]> ints = encryptByStringingWordShaffle(encryptShuffle, decrDir, 5, "asdf.");
-        for(int[] var : ints) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for(int v : var) {
-                stringBuilder.append(v);
-            }
-            System.out.println(stringBuilder);
-        }
-
-        System.out.println();
-
-        List<Integer> integers = encrByWordShift(encryptShift, decrDir, 6, "asdf.");
-        integers.forEach(System.out::println);
+//        File input = new File("src/main/resources/input/input_file.txt");
+//        File encDir = new File("src/main/resources/output_en");
+//        File decrDir = new File("src/main/resources/output_decr");
+//        File encryptShift = ShiftEncryption.encrypt(input, encDir, 5, StandardCharsets.UTF_8);
+//        File encryptShuffle = ShuffleMethod.encrypt(input, encDir, new int[]{2, 4, 3, 1, 0});
+//
+//        List<int[]> ints = encryptByStringingWordShaffle(encryptShuffle, decrDir, 5, "testtest");
+//        for(int[] var : ints) {
+//            StringBuilder stringBuilder = new StringBuilder();
+//            for(int v : var) {
+//                stringBuilder.append(v);
+//            }
+//            System.out.println(stringBuilder);
+//        }
+//
+//        System.out.println();
+//
+//        List<Integer> integers = encrByWordShift(encryptShift, decrDir, 6, "testtest");
+//        integers.forEach(System.out::println);
 
     }
 
@@ -59,7 +60,7 @@ public class StringingWordEcr {
     public static List<Integer> encrByWordShift(File input, File outDir, int maxTry, String word) throws IOException {
         ArrayList<Integer> results = new ArrayList<>();
         for(int i = 1; i <= maxTry; i++) {
-            File decrypt = ShiftEncryption.decrypt(input, outDir, i, Charset.forName("UTF-8"));
+            File decrypt = ShiftEncryption.decrypt(input, outDir, i, StandardCharsets.UTF_8);
             List<String> strings = Files.readAllLines(Paths.get(decrypt.getPath()));
             for (String s : strings) {
                 if (s.contains(word)) {

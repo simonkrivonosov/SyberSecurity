@@ -8,8 +8,8 @@ public class ShuffleMethod {
         File input = new File("src/main/resources/input/input_file.txt");
         File encDir = new File("src/main/resources/output_en");
         File decrDir = new File("src/main/resources/output_decr");
-        File encrypt = encrypt(input, encDir, new int[]{2, 4, 3, 1, 0});
-        File decrypt = decrypt(encrypt, decrDir, new int[]{2, 4, 3, 1, 0});
+        File encrypt = encrypt(input, encDir, new int[]{2, 4, 3, 1, 0, 5});
+        File decrypt = decrypt(encrypt, decrDir, new int[]{2, 4, 3, 1, 0, 5});
     }
 
     public static File encrypt(File input, File outDir, int[] shuffle) throws IOException {

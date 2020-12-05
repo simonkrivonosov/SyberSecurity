@@ -1,6 +1,9 @@
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Шифрование сдвигом
@@ -25,16 +28,25 @@ public class ShiftEncryption {
         byte a = "a".getBytes(charset)[0];
         byte z = "z".getBytes(charset)[0];
         byte[] buf = new byte[BUF_SIZE];
-        byte[] outBuf = new byte[BUF_SIZE];
+        byte[] result;
+        List<Byte> outBuf = new ArrayList<>();
         while (inputStream.read(buf) != -1) {
             for (int i = 0; i < buf.length; i++) {
+                if(buf[i] == 0) {
+                    break;
+                }
                 if (buf[i] >= (int) a && buf[i] <= (int) z) {
-                    outBuf[i] = (byte) ((buf[i] + shift - (int) a) % 26 + (int) a);
+                    outBuf.add((byte) ((buf[i] + shift - (int) a) % 26 + (int) a));
                 } else {
-                    outBuf[i] = buf[i];
+                    outBuf.add(buf[i]);
                 }
             }
-            outputStream.write(outBuf);
+            result = new byte[outBuf.size()];
+            for (int i = 0; i < outBuf.size(); i++)
+            {
+                result[i] = outBuf.get(i);
+            }
+            outputStream.write(result);
         }
         outputStream.flush();
         outputStream.close();
